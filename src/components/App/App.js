@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 // import React, { useState } from 'react';
 import './App.css';
-import Question from './components/Question/Question'
+import Question from '../Question/Question'
 
 class App extends Component {
 
+  // Class bassed componnet - React hoks
+  // reserved word, unmutable
   // useState();
 
-  // Class bassed componnet - React hoks
-  // reserved word
-  // unmutable
   state = {
-    answers: [
+    questions: [
         {id: 1, question: 'Are you happy?', answer: 1},
         {id: 2, question: 'What about the weather?', answer: 1},
         {id: 3, question: 'Are you happy with your Job?', answer: 1},
@@ -20,39 +19,36 @@ class App extends Component {
   }
 
   sendHandler = (answer) => {
-    console.log('sent::-:)');    
-    // this.state.answers[0].question;
+    console.log('sent::-:)')    
     this.setState({
-      answers: [
+      questions: [
         {id: 1, question: 'Are you happy?', answer: 4},
         {id: 2, question: 'What about the weather?', answer: 3},
         {id: 3, question: 'Are you happy with your Job?', answer: 3},
       ]
-      }
-    )
+      })
   }
 
   answersHandler = (event, id) => {
+    console.log('answersHandler - :)')
 
-    console.log('answersHandler::-:)');    
-
-    const questionAnsweredIndex = this.state.answers.findIndex(qa =>{
+    const questionAnsweredIndex = this.state.questions.findIndex(qa =>{
       return qa.id === id;
     });
 
     const questionAnswered = {
-      ...this.state.answers[questionAnsweredIndex]
-    };
+      ...this.state.questions[questionAnsweredIndex]
+    }
 
-    questionAnswered.answer = event.target.value;
+    questionAnswered.answer = event.target.value
 
-    const allQuestions = [...this.state.answers];
-    allQuestions[questionAnsweredIndex] = questionAnswered;
-    this.setState({ answers: allQuestions });
+    const allQuestions = [...this.state.questions]
+    allQuestions[questionAnsweredIndex] = questionAnswered
+    this.setState({ questions: allQuestions })
 
     /*
     this.setState({
-      answers: [
+      questions: [
         {id: 1, question: 'Are you happy?', answer: event.target.value},
         {id: 2, question: 'What about the weather?', answer: event.target.value},
         {id: 3, question: 'Are you happy with your Job?', answer: event.target.value},
@@ -62,9 +58,6 @@ class App extends Component {
   }
 
   render() {
-    
-    // You can write JS code here
-
     return (
       this.state.isFormeEnable === true ?
       <div className="App">
@@ -72,23 +65,22 @@ class App extends Component {
           <p>
             Please, answer the questions below with number from 1 to 5.
           </p>
-
-          {this.state.answers.map((question, index) => {
+        </header>
+        <body>
+        {this.state.questions.map((question, index) => {
               return <Question
               question={question.question}
               answer={question.answer}
               changed={(event) => this.answersHandler(event, question.id)}
-              click={this.sendHandler.bind(this, '0')}
               key={question.id}
+              click={this.sendHandler.bind(this, '0')}
               />             
           })}
 
-          <p>
-            <button onClick={this.sendHandler}> Send </button>
-            <button onClick={ () => this.sendHandler}> Send </button>
-          </p>
-          
-        </header>
+        <p>
+          <button onClick={this.sendHandler}> Send </button>
+        </p>
+        </body>
       </div>
       : null
     );
