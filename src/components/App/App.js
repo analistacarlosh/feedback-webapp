@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import React, { useState } from 'react';
 import './App.css';
 import Question from '../Question/Question'
+import axios from 'axios';
 
 class App extends Component {
 
@@ -57,6 +58,15 @@ class App extends Component {
      */ 
   }
 
+  componentDidMount() {
+    //console.log('componentDidMount')
+    axios.get('https://feedback-app-83210.firebaseio.com/questions.json')
+      .then(res => {
+        let questions_data = res.data;
+        this.setState({ questions: questions_data });
+      })
+  }
+
   render() {
     return (
       this.state.isFormeEnable === true ?
@@ -66,7 +76,7 @@ class App extends Component {
             Please, answer the questions below with number from 1 to 5.
           </p>
         </header>
-        <body>
+        <main className="App-container">
         {this.state.questions.map((question, index) => {
               return <Question
               question={question.question}
@@ -80,7 +90,7 @@ class App extends Component {
         <p>
           <button onClick={this.sendHandler}> Send </button>
         </p>
-        </body>
+        </main>
       </div>
       : null
     );
