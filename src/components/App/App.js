@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 // import React, { useState } from 'react';
 import './App.css';
 import Question from '../Question/Question'
-import axios from 'axios';
+import Navigation from '../Navigation/Navigation'
+import Register from '../Register/Register'
+import Result from '../Result/Result'
+
+import { BrowserRouter as Router, Route} from "react-router-dom";
+// import axios from 'axios'
 
 class App extends Component {
 
@@ -60,21 +65,23 @@ class App extends Component {
 
   componentDidMount() {
     //console.log('componentDidMount')
-    axios.get('https://feedback-app-83210.firebaseio.com/questions.json')
-      .then(res => {
-        let questions_data = res.data;
-        this.setState({ questions: questions_data });
-      })
+    // axios.get('https://feedback-app-83210.firebaseio.com/questions.json')
+    //   .then(res => {
+    //     let questions_data = res.data;
+    //     this.setState({ questions: questions_data });
+    //   })
   }
 
   render() {
     return (
+      <Router>
       this.state.isFormeEnable === true ?
       <div className="App">
         <header className="App-header">
           <p>
             Please, answer the questions below with number from 1 to 5.
           </p>
+          <Navigation/>
         </header>
         <main className="App-container">
         {this.state.questions.map((question, index) => {
@@ -86,13 +93,16 @@ class App extends Component {
               click={this.sendHandler.bind(this, '0')}
               />             
           })}
-
         <p>
           <button onClick={this.sendHandler}> Send </button>
         </p>
         </main>
       </div>
       : null
+        <Route exact path="/" component={App} />
+        <Route path="/result" component={Result} />
+        <Route path="/user-register" component={Register} />
+      </Router>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'FeedBack App'))
   }
