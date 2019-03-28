@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-// import React, { useState } from 'react';
 import './App.css';
 import Question from '../Question/Question'
 import axios from 'axios';
 
 class App extends Component {
 
-  // Class bassed componnet - React hoks
+  // Class bassed componnet
   // reserved word, unmutable
-  // useState();
 
   state = {
     questions: [
@@ -19,7 +17,7 @@ class App extends Component {
     isFormeEnable: true
   }
 
-  sendHandler = (answer) => {
+  sendHandler = () => {
     console.log('sent::-:)')    
     this.setState({
       questions: [
@@ -46,18 +44,10 @@ class App extends Component {
     const allQuestions = [...this.state.questions]
     allQuestions[questionAnsweredIndex] = questionAnswered
     this.setState({ questions: allQuestions })
-
-    /*
-    this.setState({
-      questions: [
-        {id: 1, question: 'Are you happy?', answer: event.target.value},
-        {id: 2, question: 'What about the weather?', answer: event.target.value},
-        {id: 3, question: 'Are you happy with your Job?', answer: event.target.value},
-      ]
-      });
-     */ 
   }
 
+  // Life cycle
+  // Tte mounting 
   componentDidMount() {
     //console.log('componentDidMount')
     axios.get('https://feedback-app-83210.firebaseio.com/questions.json')
@@ -77,16 +67,14 @@ class App extends Component {
           </p>
         </header>
         <main className="App-container">
-        {this.state.questions.map((question, index) => {
+            {this.state.questions.map((q, index) => {
               return <Question
-              question={question.question}
-              answer={question.answer}
-              changed={(event) => this.answersHandler(event, question.id)}
-              key={question.id}
-              click={this.sendHandler.bind(this, '0')}
-              />             
-          })}
-
+                question={q.question} 
+                answer={q.answer}
+                changed={(event) => this.answersHandler(event, q.id)}
+                key={q.id}
+                />
+            })}
         <p>
           <button onClick={this.sendHandler}> Send </button>
         </p>
